@@ -14,12 +14,12 @@ import (
 var pipe = ""
 var runMode = true
 
-func run(path string) {
-	if pipe != path {
+func run(name string, path string) {
+	if pipe != name {
 		return
 	}
 
-	fmt.Println("Running: " + path)
+	fmt.Println("Running: " + name)
 
 	file, _ := os.Open(path)
 	reader := bufio.NewReader(file)
@@ -36,14 +36,14 @@ func run(path string) {
 	os.Exit(0)
 }
 
-func name(path string) {
+func name(path string) string {
 	file, _ := os.Open(path)
 	reader := bufio.NewReader(file)
 
 	desktopFile, _ := desktop.New(reader)
 	name := desktopFile.Name
 
-	fmt.Println(name)
+	return name
 }
 
 func main() {
@@ -73,7 +73,7 @@ func main() {
 				return nil
 			}
 			if runMode {
-				run(path)
+				run(name(path), path)
 			} else {
 				files = append(files, path)
 			}
@@ -84,7 +84,7 @@ func main() {
 			panic(err)
 		}
 		for _, file := range files {
-			name(file)
+			fmt.Println(name(file))
 		}
 	}
 }
