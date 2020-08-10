@@ -57,7 +57,6 @@ func main() {
 
 	if (info.Mode() & os.ModeCharDevice) == os.ModeCharDevice {
 		runMode = false
-		fmt.Printf("hello")
 	} else {
 		scanner := bufio.NewScanner(bufio.NewReader(os.Stdin))
 		for scanner.Scan() {
