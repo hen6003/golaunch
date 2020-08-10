@@ -1,7 +1,7 @@
 # golaunch
 a simple .desktop file launcher
 
-can be used with any other application like fzf which gives the user a choice from a list the returns what the user chooses
+can be used with any other application like fzf which gives the user a choice from a list and, returns what the user chooses
 with this:
   `./golaunch | fzf | ./golaunch`
 
