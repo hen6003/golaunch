@@ -7,3 +7,5 @@ with this:
 
 so with instantmenu from instantos:
   `./golaunch | instantmenu -i -f -q "search apps" -l 10 -c -w -1 -h -1 -bw 4 | ./golaunch`
+
+![Example](golaunch.png)
