@@ -3,12 +3,13 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"github.com/rkoesters/xdg/basedir"
-	"github.com/rkoesters/xdg/desktop"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	"github.com/rkoesters/xdg/basedir"
+	"github.com/rkoesters/xdg/desktop"
 )
 
 var pipe = ""
@@ -26,12 +27,15 @@ func run(name string, path string) {
 
 	desktopFile, _ := desktop.New(reader)
 	cmd := desktopFile.Exec
-	tmpArray := strings.Fields(cmd)
-	cmd = tmpArray[0]
+	cmdArray := strings.Fields(cmd)
+	cmd = cmdArray[0]
 
-	fmt.Println("Starting:" + cmd)
-
-	exec.Command(cmd).Start()
+	fmt.Println("Starting: " + cmd)
+	if desktopFile.Terminal {
+		exec.Command("st", "-e", cmd).Start()
+	} else {
+		exec.Command(cmd).Start()
+	}
 
 	os.Exit(0)
 }
