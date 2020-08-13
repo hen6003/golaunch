@@ -20,8 +20,6 @@ func run(name string, path string) {
 		return
 	}
 
-	fmt.Println("Running: " + name)
-
 	file, _ := os.Open(path)
 	reader := bufio.NewReader(file)
 
@@ -65,7 +63,6 @@ func main() {
 		scanner := bufio.NewScanner(bufio.NewReader(os.Stdin))
 		for scanner.Scan() {
 			pipe = scanner.Text()
-			fmt.Println(pipe)
 		}
 	}
 
@@ -90,5 +87,9 @@ func main() {
 		for _, file := range files {
 			fmt.Println(name(file))
 		}
+	}
+	if runMode {
+		fmt.Println("Error: " + pipe + " not found")
+		os.Exit(1)
 	}
 }
