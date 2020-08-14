@@ -39,6 +39,10 @@ func run(name string, path string) {
 	}
 
 	cmd := desktopFile.Exec
+	if cmd == "" {
+		os.Exit(1)
+	}
+
 	cmdArray := strings.Fields(cmd)
 	cmd = cmdArray[0]
 
