@@ -26,10 +26,18 @@ func run(name string, path string) {
 		terminal = os.Args[1]
 	}
 
-	file, _ := os.Open(path)
+	file, err := os.Open(path)
+	if err != nil {
+		panic(err)
+	}
+
 	reader := bufio.NewReader(file)
 
-	desktopFile, _ := desktop.New(reader)
+	desktopFile, err := desktop.New(reader)
+	if err != nil {
+		panic(err)
+	}
+
 	cmd := desktopFile.Exec
 	cmdArray := strings.Fields(cmd)
 	cmd = cmdArray[0]
@@ -62,7 +70,6 @@ func main() {
 	}
 
 	info, _ := os.Stdin.Stat()
-
 	if (info.Mode() & os.ModeCharDevice) == os.ModeCharDevice {
 		runMode = false
 	} else {
