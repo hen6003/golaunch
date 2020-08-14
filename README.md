@@ -10,4 +10,7 @@ with this:
 so with instantmenu from instantos:
   `golaunch | instantmenu -i -f -q "search apps" -l 10 -c -w -1 -h -1 -bw 4 | golaunch`
 
+you can choose what terminal launches terminal apps with an arg:
+  `golaunch | fzf | golaunch st`
+
 ![Example](golaunch.png)

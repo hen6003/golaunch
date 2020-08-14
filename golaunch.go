@@ -20,6 +20,12 @@ func run(name string, path string) {
 		return
 	}
 
+	terminal := "xterm"
+
+	if len(os.Args) > 1 {
+		terminal = os.Args[1]
+	}
+
 	file, _ := os.Open(path)
 	reader := bufio.NewReader(file)
 
@@ -30,7 +36,7 @@ func run(name string, path string) {
 
 	fmt.Println("Starting: " + cmd)
 	if desktopFile.Terminal {
-		exec.Command("st", "-e", cmd).Start()
+		exec.Command(terminal, "-e", cmd).Start()
 	} else {
 		exec.Command(cmd).Start()
 	}
