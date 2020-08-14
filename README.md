@@ -2,6 +2,7 @@
 a simple .desktop file launcher
 
 install with: `go get github.com/hen6003/golaunch`
+
 or on arch 'golaunch' from the aur: `yay -S golaunch`
 
 can be used with any other application like fzf which gives the user a choice from a list and, returns what the user chooses
