@@ -2,7 +2,7 @@
 
 pkgname=golaunch
 # https://gitlab.com/diamondburned/6cord/releases
-pkgver=0.2
+pkgver=0.3
 pkgrel=1
 pkgdesc='a simple .desktop launcher written in go.'
 arch=('x86_64')
@@ -11,6 +11,12 @@ license=('MIT')
 makedepends=('go' 'git')
 source=("https://github.com/hen6003/golaunch/archive/master.tar.gz")
 md5sums=("c343bd8adbaa6b1b292330ca0518cbf5")
+
+prepare() {
+  go get -u \
+    github.com/rkoesters/xdg/basedir \
+	github.com/rkoesters/xdg/desktop
+}
 
 build() {
   cd "$pkgname"-master
@@ -23,5 +29,6 @@ build() {
 
 package() {
   cd "$pkgname"-master
+  mkdir -p "$pkgdir"/usr/bin/
   install -Dm755 $pkgname "$pkgdir"/usr/bin/"$pkgname"
 }
