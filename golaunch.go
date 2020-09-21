@@ -43,14 +43,37 @@ func run(name string, path string) {
 		os.Exit(1)
 	}
 
-	cmdArray := strings.Fields(cmd)
-	cmd = cmdArray[0]
+	for true {
+		i := strings.Index(cmd, "%")
+
+		if i == -1 {
+			break
+		}
+
+		cmd = cmd[:i] + cmd[i+2:]
+	}
+
+	cmdArray := strings.Split(cmd, " ")
 
 	fmt.Println("Starting: " + cmd)
 	if desktopFile.Terminal {
-		exec.Command(terminal, "-e", cmd).Start()
+		for i, v := range cmdArray {
+			if i+1 == len(cmdArray) {
+				cmdArray = append(cmdArray, v)
+			} else {
+				cmdArray[i+1] = v
+			}
+		}
+
+		cmdArray[0] = "-e"
+
+		err = exec.Command(terminal, cmdArray...).Start()
 	} else {
-		exec.Command(cmd).Start()
+		err = exec.Command(cmdArray[0], cmdArray[1:]...).Start()
+	}
+
+	if err != nil {
+		fmt.Println(err)
 	}
 
 	os.Exit(0)
