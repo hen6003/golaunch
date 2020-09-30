@@ -98,7 +98,7 @@ func main() {
 
 	info, _ := os.Stdin.Stat()
 	if (info.Mode() & os.ModeCharDevice) == os.ModeCharDevice {
-		runMode = false
+		os.Exit(1)
 	} else {
 		scanner := bufio.NewScanner(bufio.NewReader(os.Stdin))
 		for scanner.Scan() {
@@ -113,11 +113,8 @@ func main() {
 			if path[len(path)-8:] != ".desktop" {
 				return nil
 			}
-			if runMode {
-				run(name(path), path)
-			} else {
-				files = append(files, path)
-			}
+
+			run(name(path), path)
 
 			return nil
 		})
