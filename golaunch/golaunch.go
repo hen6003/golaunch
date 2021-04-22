@@ -15,15 +15,24 @@ import (
 var pipe = ""
 var runMode = true
 
-func run(name string, path string) {
-	if pipe != name {
+func run(path string) {
+	if pipe != name(path) {
 		return
 	}
 
 	terminal := "xterm"
 
 	if len(os.Args) > 1 {
-		terminal = os.Args[1]
+		tmp := os.Args[len(os.Args)-1]
+		if len(tmp) > 9 {
+			if tmp[len(tmp)-8:] != ".desktop" {
+				terminal = tmp
+				fmt.Println("lol")
+			}
+		} else {
+			terminal = tmp
+			fmt.Println("lol")
+		}
 	}
 
 	file, err := os.Open(path)
@@ -90,39 +99,45 @@ func name(path string) string {
 }
 
 func main() {
-	allDataDirs := []string{basedir.DataHome}
-
-	for _, v := range basedir.DataDirs {
-		allDataDirs = append(allDataDirs, v)
-	}
-
-	info, _ := os.Stdin.Stat()
-	if (info.Mode() & os.ModeCharDevice) == os.ModeCharDevice {
-		os.Exit(1)
+	if len(os.Args) > 1 {
+		path := os.Args[1]
+		pipe = name(path)
+		run(path)
 	} else {
-		scanner := bufio.NewScanner(bufio.NewReader(os.Stdin))
-		for scanner.Scan() {
-			pipe = scanner.Text()
+		allDataDirs := []string{basedir.DataHome}
+
+		for _, v := range basedir.DataDirs {
+			allDataDirs = append(allDataDirs, v)
 		}
-	}
 
-	for _, v := range allDataDirs {
-		var files []string
-
-		err := filepath.Walk(v+"/applications", func(path string, info os.FileInfo, err error) error {
-			if path[len(path)-8:] != ".desktop" {
-				return nil
+		info, _ := os.Stdin.Stat()
+		if (info.Mode() & os.ModeCharDevice) == os.ModeCharDevice {
+			os.Exit(1)
+		} else {
+			scanner := bufio.NewScanner(bufio.NewReader(os.Stdin))
+			for scanner.Scan() {
+				pipe = scanner.Text()
 			}
-
-			run(name(path), path)
-
-			return nil
-		})
-		if err != nil {
-			panic(err)
 		}
-		for _, file := range files {
-			fmt.Println(name(file))
+
+		for _, v := range allDataDirs {
+			var files []string
+
+			err := filepath.Walk(v+"/applications", func(path string, info os.FileInfo, err error) error {
+				if path[len(path)-8:] != ".desktop" {
+					return nil
+				}
+
+				run(path)
+
+				return nil
+			})
+			if err != nil {
+				panic(err)
+			}
+			for _, file := range files {
+				fmt.Println(name(file))
+			}
 		}
 	}
 	if runMode {
