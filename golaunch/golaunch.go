@@ -27,11 +27,9 @@ func run(path string) {
 		if len(tmp) > 9 {
 			if tmp[len(tmp)-8:] != ".desktop" {
 				terminal = tmp
-				fmt.Println("lol")
 			}
 		} else {
 			terminal = tmp
-			fmt.Println("lol")
 		}
 	}
 
